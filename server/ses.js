@@ -16,7 +16,7 @@ const ses = new aws.SES({
 exports.sendEmail = (recipient, message, subject) => {
     return ses
         .sendEmail({
-            Source: "Meghana Pulivarthi <meghanasai99499@gmail.email>",
+            Source: "Meghana Pulivarthi <winter.clerk@spicedling.email>",
             Destination: {
                 ToAddresses: [recipient],
             },
@@ -33,7 +33,5 @@ exports.sendEmail = (recipient, message, subject) => {
         })
         .promise()
         .then(() => console.log("it worked!"))
-        .catch((err) =>
-            console.log("Something went wrong while sending email", err)
-        );
+        .catch((err) => console.log("Something went wrong while sending", err));
 };

@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS reset_codes;
 
 
 CREATE TABLE users (
@@ -9,7 +10,6 @@ CREATE TABLE users (
   password VARCHAR NOT NULL CHECK (password !='')
 );
 
-DROP TABLE IF EXISTS reset_codes;
   CREATE TABLE reset_codes(
     id SERIAL PRIMARY KEY,
     email VARCHAR NOT NULL REFERENCES users(email)  ,

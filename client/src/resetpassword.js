@@ -99,9 +99,9 @@ export default class Reset extends Component {
             return (
                 <div>
                     <input
-                        type="email"
-                        name="email"
-                        placeholder="email"
+                        type="password"
+                        name="password"
+                        placeholder="password"
                         onChange={(e) => this.handleChange(e)}
                     />
                     <input

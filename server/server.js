@@ -58,7 +58,7 @@ app.post("/register", (req, res) => {
         });
 });
 app.post("/login", (req, res) => {
-    console.log("req body value", req.body);
+    // console.log("req body value", req.body);
 
     db.getEmail(req.body.email)
         .then((result) => {
@@ -89,7 +89,7 @@ app.post("/login", (req, res) => {
 app.post("/password/reset/start", (req, res) => {
     db.getEmail(req.body.email)
         .then((result) => {
-            if (!result.rows.length) {
+            if (result.rowCount === 0) {
                 console.log("error in db.getEmail");
                 res.json({ success: false });
             } else {
@@ -110,14 +110,39 @@ app.post("/password/reset/start", (req, res) => {
 });
 
 app.post("/password/reset/verify", (req, res) => {
-    const code = req.body.code;
-
-    db.verifyEmail(req.body.email, code)
+    db.verifyCode(req.body.email)
         .then((result) => {
-            if (req.body.email == result.rows.email) {
-                res.json({ success: true, code });
+            console.log(
+                "result.rows[result.rows.length - 1].secretCode",
+                result.rows[result.rows.length - 1]
+            );
+            console.log("req.body.code", req.body.code);
+            if (result.rows[result.rows.length - 1].code == req.body.code) {
+                console.log("yayy its match");
+                bcrypt
+                    .hash(req.body.password)
+                    .then((hashpasswd) => {
+                        db.newPwd(hashpasswd, req.body.email)
+                            .then((result) => {
+                                console.log("Result in db.newpwd", result.rows);
+                                req.session.userID = result.rows[0].id;
+
+                                res.json({ success: true });
+                            })
+                            .catch((err) => {
+                                console.log(
+                                    "Error in  bcrypt hash new pwd",
+                                    err
+                                );
+                                res.json({ success: false });
+                            });
+                    })
+                    .catch((err) => {
+                        console.log("Error in Post new pwd ", err);
+                    });
+
             } else {
-                console.log("error in db.getEmail");
+                console.log("error in db.verifycode");
                 res.json({ success: false });
             }
         })

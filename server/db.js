@@ -23,7 +23,7 @@ module.exports.addUser = (first, last, email, password) => {
 
 module.exports.getEmail = (email) => {
     return db.query(
-        `SELECT *
+        `SELECT * 
         FROM users
     WHERE email = $1`,
         [email]
@@ -38,8 +38,20 @@ module.exports.verifyEmail = (email, secretCode) => {
     return db.query(q, param);
 };
 
-module.exports.verifyCode = (secretCode) => {
-    return db.query(`SELECT * FROM my_table
-WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';`
-,secretCode);
+module.exports.verifyCode = (email) => {
+    const q = `SELECT code FROM reset_codes
+WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
+AND  email=$1`;
+    const param = [email];
+    return db.query(q, param);
+};
+
+module.exports.newPwd = (password, email) => {
+    return db.query(
+        `UPDATE users
+SET password=$1
+WHERE email=$2
+RETURNING * ;`,
+        [password, email]
+    );
 };
