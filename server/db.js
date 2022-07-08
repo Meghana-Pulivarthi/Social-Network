@@ -13,8 +13,10 @@ console.log("[db] connecting to:", database);
 //----------------------Users Table-----------------\\
 
 module.exports.addUser = (first, last, email, password) => {
-    console.log(first, last, email);
-    const q = `INSERT INTO users (first,last, email, password) VALUES ($1,$2,$3,$4) RETURNING *`;
+    // console.log(first, last, email);
+    const q = `INSERT INTO users (first,last, email, password) 
+    VALUES ($1,$2,$3,$4) 
+    RETURNING *`;
     const param = [first, last, email, password];
     return db.query(q, param);
 };

@@ -42,8 +42,12 @@ app.post("/register", (req, res) => {
                 hashpasswd
             )
                 .then((result) => {
-                    console.log("Result in bcrypt.hash", result.rows);
+                    console.log("Result in db.adduser", result.rows);
                     req.session.userID = result.rows[0].id;
+                    console.log(
+                        "req.session after setting userID: ",
+                        req.session
+                    );
                     res.json({ success: true });
                 })
                 .catch((err) => {
@@ -59,7 +63,7 @@ app.post("/register", (req, res) => {
 //we need cookies
 app.get("/user/id.json", function (req, res) {
     res.json({
-        userId: req.session.userId,
+        userID: req.session.userID,
     });
 });
 // app.use(express.static(path.join(__dirname, "..", "client", "public")));

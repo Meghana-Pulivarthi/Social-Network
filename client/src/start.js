@@ -5,12 +5,12 @@ import Welcome from "./welcome";
 fetch("/user/id.json")
     .then((response) => response.json())
     .then((data) => {
-        if (!data.userId) {
+        console.log("data in start.js: ", data);
+        if (!data.userID) {
             ReactDOM.render(<Welcome />, document.querySelector("main"));
         } else {
             ReactDOM.render(
-            
-                    <img src="/logo.jpg" alt="logo" />,
+                <img src="/logo.jpg" alt="logo" />,
                 document.querySelector("main")
             );
         }
