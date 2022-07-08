@@ -29,3 +29,17 @@ module.exports.getEmail = (email) => {
         [email]
     );
 };
+
+module.exports.verifyEmail = (email, secretCode) => {
+    const q = `INSERT INTO reset_codes (email,code) 
+    VALUES ($1,$2) 
+    RETURNING *`;
+    const param = [email, secretCode];
+    return db.query(q, param);
+};
+
+module.exports.verifyCode = (secretCode) => {
+    return db.query(`SELECT * FROM my_table
+WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';`
+,secretCode);
+};

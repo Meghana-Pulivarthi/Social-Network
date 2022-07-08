@@ -31,7 +31,7 @@ export default class Registration extends Component {
     }
 
     handleSubmit() {
-        console.log("Clicked on submit btton");
+        // console.log("Clicked on submit btton");
 
         fetch("/register", {
             method: "POST",
@@ -59,7 +59,7 @@ export default class Registration extends Component {
                 }
             })
             .catch((error) => {
-                console.log("Erro in  handle submit", error);
+                console.log("Error in  handle submit", error);
                 this.setState({
                     error: true,
                 });
@@ -67,7 +67,7 @@ export default class Registration extends Component {
     }
     render() {
         return (
-            <div>
+            <div id="register">
                 <h1> This is a registration component</h1>
                 {this.state.error && (
                     <p style={{ color: "red" }}>oops!something went wrong</p>
@@ -85,7 +85,7 @@ export default class Registration extends Component {
                     onChange={(e) => this.handleChange(e)}
                 />
                 <input
-                    type="text"
+                    type="email"
                     name="email"
                     placeholder="email"
                     onChange={(e) => this.handleChange(e)}
@@ -99,8 +99,11 @@ export default class Registration extends Component {
                 <button type="submit" onClick={() => this.handleSubmit()}>
                     Submit
                 </button>
-                <h1>Alraedy a memember</h1>
-                <Link to="/login">Click here to Log in!</Link>;
+                <p>
+                    Already a memember?
+                    <Link to="/login">Click here to Log in!</Link>;
+                </p>
+
             </div>
         );
     }

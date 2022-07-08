@@ -5,6 +5,8 @@ const path = require("path");
 const db = require("./db");
 const cookieSession = require("cookie-session");
 const bcrypt = require("./bcrypt");
+const cryptoRandomString = require("crypto-random-string");
+const { sendEmail } = require("./ses.js");
 
 app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
@@ -60,14 +62,11 @@ app.post("/login", (req, res) => {
 
     db.getEmail(req.body.email)
         .then((result) => {
-            // console.log("result.rows[0]", result.rows[0]);
-            // console.log("result.rows[0].password", result.rows[0].password);
-            // console.log("req.body.password", req.body.password);
-       return   bcrypt
+            return bcrypt
                 .compare(req.body.password, result.rows[0].password)
                 .then((match) => {
                     if (match) {
-                        console.log("result.rows[0].id", result.rows[0]);
+                        // console.log("result.rows[0].id", result.rows[0]);
                         req.session.userID = result.rows[0].id;
                         if (req.session.userID) {
                             res.json({ success: true });
@@ -87,7 +86,47 @@ app.post("/login", (req, res) => {
         });
 });
 
-//we need cookies
+app.post("/password/reset/start", (req, res) => {
+    db.getEmail(req.body.email)
+        .then((result) => {
+            if (!result.rows.length) {
+                console.log("error in db.getEmail");
+                res.json({ success: false });
+            } else {
+                console.log("req.body.email", req.body.email);
+                const secretCode = cryptoRandomString({
+                    length: 6,
+                });
+                db.verifyEmail(req.body.email, secretCode).then(() => {
+                    sendEmail(req.body.email, secretCode, "Your Code");
+                    res.json({ success: true });
+                });
+            }
+        })
+
+        .catch((err) => {
+            console.log("Error in get email password reset", err);
+        });
+});
+
+app.post("/password/reset/verify", (req, res) => {
+    const code = req.body.code;
+
+    db.verifyEmail(req.body.email, code)
+        .then((result) => {
+            if (req.body.email == result.rows.email) {
+                res.json({ success: true, code });
+            } else {
+                console.log("error in db.getEmail");
+                res.json({ success: false });
+            }
+        })
+
+        .catch((err) => {
+            console.log("Error in verify email password verify", err);
+        });
+});
+
 app.get("/user/id.json", function (req, res) {
     res.json({
         userID: req.session.userID,

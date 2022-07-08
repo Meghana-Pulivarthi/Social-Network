@@ -45,7 +45,7 @@ export default class Login extends Component {
                 }
             })
             .catch((error) => {
-                console.log("Erro in  handle submit", error);
+                console.log("Error in  handle submit", error);
                 this.setState({
                     error: true,
                 });
@@ -54,7 +54,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div>
+            <div id="login">
                 <h1>This is the login component.</h1>
                 {this.state.error && (
                     <p style={{ color: "red" }}>oops!something went wrong</p>
@@ -74,7 +74,11 @@ export default class Login extends Component {
                 <button type="submit" onClick={() => this.handleSubmit()}>
                     Submit
                 </button>
-                <Link to="/">Click here to register in!</Link>;
+                <Link to="/">Click here to register!</Link>;
+                <p>
+                    Forgot password?
+                    <Link to="/reset">Reset your password!</Link>;
+                </p>
             </div>
         );
     }
