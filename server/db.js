@@ -20,3 +20,12 @@ module.exports.addUser = (first, last, email, password) => {
     const param = [first, last, email, password];
     return db.query(q, param);
 };
+
+module.exports.getEmail = (email) => {
+    return db.query(
+        `SELECT *
+        FROM users
+    WHERE email = $1`,
+        [email]
+    );
+};

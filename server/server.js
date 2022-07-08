@@ -7,10 +7,6 @@ const cookieSession = require("cookie-session");
 const bcrypt = require("./bcrypt");
 
 app.use(compression());
-// app.use(express.static("./public"));
-// const { engine } = require("express-handlebars");
-// app.engine("handlebars", engine());
-// app.set("view engine", "handlebars");
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.json());
 
@@ -31,7 +27,7 @@ app.use(
     })
 );
 app.post("/register", (req, res) => {
-    console.log("req body value", req.body);
+    // console.log("req body value", req.body);
     bcrypt
         .hash(req.body.password)
         .then((hashpasswd) => {
@@ -57,6 +53,37 @@ app.post("/register", (req, res) => {
         })
         .catch((err) => {
             console.log("Error in Post Register ", err);
+        });
+});
+app.post("/login", (req, res) => {
+    console.log("req body value", req.body);
+
+    db.getEmail(req.body.email)
+        .then((result) => {
+            // console.log("result.rows[0]", result.rows[0]);
+            // console.log("result.rows[0].password", result.rows[0].password);
+            // console.log("req.body.password", req.body.password);
+       return   bcrypt
+                .compare(req.body.password, result.rows[0].password)
+                .then((match) => {
+                    if (match) {
+                        console.log("result.rows[0].id", result.rows[0]);
+                        req.session.userID = result.rows[0].id;
+                        if (req.session.userID) {
+                            res.json({ success: true });
+                        } else {
+                            res.json({ success: false });
+                        }
+                    } else {
+                        console.log("error in db.getEmail");
+                    }
+                })
+                .catch((err) => {
+                    console.log("Error in match", err);
+                });
+        })
+        .catch((err) => {
+            console.log("Error in get email", err);
         });
 });
 

@@ -1,25 +1,17 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 
-export default class Registration extends Component {
+export default class Login extends Component {
     constructor() {
         super();
         this.state = {
             error: false,
         };
-        //binding this
-        // this.handleChange = this.handleChange.bind(this);
     }
-    //to do:
-    //1. render 4 input fields + button ✅
-    //2. capture the user's input and store it state ✅
-    //3. when the user submits, we want to send the data to the server
-    //4. if something goes wrong, conditonally render an err msg
-    //5. if everything goes well , show logo
 
     handleChange(e) {
-        //console.log("Handle change is running");
-        //console.log("e value", e.target.value);
+        console.log("Handle changein login is running");
+        console.log("e value", e.target.value);
 
         this.setState(
             {
@@ -29,11 +21,10 @@ export default class Registration extends Component {
             () => console.log("this.state", this.state)
         );
     }
-
     handleSubmit() {
         console.log("Clicked on submit btton");
 
-        fetch("/register", {
+        fetch("/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -42,14 +33,9 @@ export default class Registration extends Component {
         })
             .then((resp) => resp.json())
             .then((data) => {
-                console.log("data from POST/register ", data);
-                //4. if something goes wrong, conditonally render an err msg
-                //5. if everything goes well , show logo do reload
+                console.log("data from POST/login ", data);
 
                 if (data.success) {
-                    // this.setState({
-                    //     error: false,
-                    // });
                     console.log("Reloading page");
                     location.reload();
                 } else {
@@ -65,25 +51,14 @@ export default class Registration extends Component {
                 });
             });
     }
+
     render() {
         return (
             <div>
-                <h1> This is a registration component</h1>
+                <h1>This is the login component.</h1>
                 {this.state.error && (
                     <p style={{ color: "red" }}>oops!something went wrong</p>
                 )}
-                <input
-                    type="text"
-                    name="first"
-                    placeholder="first"
-                    onChange={(e) => this.handleChange(e)}
-                />
-                <input
-                    type="text"
-                    name="last"
-                    placeholder="last"
-                    onChange={(e) => this.handleChange(e)}
-                />
                 <input
                     type="text"
                     name="email"
@@ -99,8 +74,7 @@ export default class Registration extends Component {
                 <button type="submit" onClick={() => this.handleSubmit()}>
                     Submit
                 </button>
-                <h1>Alraedy a memember</h1>
-                <Link to="/login">Click here to Log in!</Link>;
+                <Link to="/">Click here to register in!</Link>;
             </div>
         );
     }
