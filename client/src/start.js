@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
+import App from "./app";
 
 // import HelloWorld from "./helloWorld";
 
@@ -10,9 +11,6 @@ fetch("/user/id.json")
         if (!data.userID) {
             ReactDOM.render(<Welcome />, document.querySelector("main"));
         } else {
-            ReactDOM.render(
-                <img src="/logo.jpg" alt="logo" />,
-                document.querySelector("main")
-            );
+            ReactDOM.render(<App />, document.querySelector("main"));
         }
     });

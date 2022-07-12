@@ -97,7 +97,7 @@ export default class Reset extends Component {
             );
         } else if (this.state.view === 2) {
             return (
-                <div>
+                <div id="reset_pwd">
                     <input
                         type="password"
                         name="password"

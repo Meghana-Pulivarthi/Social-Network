@@ -7,6 +7,9 @@ const cookieSession = require("cookie-session");
 const bcrypt = require("./bcrypt");
 const cryptoRandomString = require("crypto-random-string");
 const { sendEmail } = require("./ses.js");
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const s3 = require("./s3");
 
 app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
@@ -140,7 +143,6 @@ app.post("/password/reset/verify", (req, res) => {
                     .catch((err) => {
                         console.log("Error in Post new pwd ", err);
                     });
-
             } else {
                 console.log("error in db.verifycode");
                 res.json({ success: false });
@@ -151,11 +153,54 @@ app.post("/password/reset/verify", (req, res) => {
             console.log("Error in verify email password verify", err);
         });
 });
-
 app.get("/user/id.json", function (req, res) {
     res.json({
         userID: req.session.userID,
     });
+});
+app.get("/user", (req, res) => {
+    db.getProfile(req.session.userID).then((results) => {
+        const userInfo = results.rows[0];
+        console.log("userInfo", userInfo);
+        res.json({
+            userInfo,
+        });
+    });
+});
+
+const storage = multer.diskStorage({
+    destination(req, file, callback) {
+        callback(null, path.join(__dirname, "uploads"));
+    },
+    filename(req, file, callback) {
+        uidSafe(24).then((randomString) => {
+            // console.log("file info", file);
+            const extname = path.extname(file.originalname);
+            // console.log("extname", extname);
+            callback(null, `${randomString}${extname}`);
+        });
+    },
+});
+const uploader = multer({
+    storage: storage,
+    limits: { fileSize: 2097152 },
+});
+
+app.post("/upload", uploader.single("upload"), s3.upload, (req, res) => {
+    console.log("https://s3.amazonaws.com/spicedling/" + req.file.filename);
+    const imgurl = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
+    db.addImg(imgurl, req.session.userID)
+        .then((result) => {
+            console.log("result.rows[0]", result.rows[0].imgurl);
+            res.json({ data: result.rows[0].imgurl });
+        })
+        .catch((err) => {
+            console.log("Error in add Images", err);
+        });
+});
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
 });
 // app.use(express.static(path.join(__dirname, "..", "client", "public")));
 

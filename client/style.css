@@ -5,7 +5,8 @@ body {
     background-color: blue;
 }
 #register,
-#login {
+#login,
+#reset_pwd {
     /* Size & position */
     width: 300px;
     margin: 60px auto 30px;

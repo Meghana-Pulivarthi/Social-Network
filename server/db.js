@@ -55,3 +55,17 @@ RETURNING * ;`,
         [password, email]
     );
 };
+
+module.exports.addImg = (imgurl, userID) => {
+    return db.query(
+        `UPDATE users
+        SET imgurl =$1
+        WHERE id=$2
+        RETURNING imgurl`,
+        [imgurl, userID]
+    );
+};
+
+module.exports.getProfile = (id) => {
+    return db.query(`SELECT first, last, imgurl FROM users WHERE id=$1 `, [id]);
+};
