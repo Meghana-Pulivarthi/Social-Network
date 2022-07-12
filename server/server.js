@@ -161,7 +161,7 @@ app.get("/user/id.json", function (req, res) {
 app.get("/user", (req, res) => {
     db.getProfile(req.session.userID).then((results) => {
         const userInfo = results.rows[0];
-        console.log("userInfo", userInfo);
+        // console.log("userInfo", userInfo);
         res.json({
             userInfo,
         });
@@ -198,6 +198,26 @@ app.post("/upload", uploader.single("upload"), s3.upload, (req, res) => {
             console.log("Error in add Images", err);
         });
 });
+// app.get("/bioedit", (req, res) => {
+//     db.getProfile(req.session.userID).then((results) => {
+//         const userProfile = results.rows[0];
+//         console.log("userInfo", userProfile);
+//         res.json({
+//             userProfile,
+//         });
+//     });
+// });
+app.post("/bioedit", (req, res) => {
+    db.addBio(req.body.bio, req.session.userID)
+        .then((result) => {
+            console.log("result.rows[0]", result.rows[0].bio);
+            res.json({ payload: result.rows[0] });
+        })
+        .catch((err) => {
+            console.log("Error in add bio", err);
+        });
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");

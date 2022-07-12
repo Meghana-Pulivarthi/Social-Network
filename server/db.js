@@ -67,5 +67,17 @@ module.exports.addImg = (imgurl, userID) => {
 };
 
 module.exports.getProfile = (id) => {
-    return db.query(`SELECT first, last, imgurl FROM users WHERE id=$1 `, [id]);
+    return db.query(`SELECT first, last, imgurl, bio FROM users WHERE id=$1 `, [
+        id,
+    ]);
+};
+
+module.exports.addBio = (bio, userID) => {
+    return db.query(
+        `UPDATE users
+        SET bio =$1
+        WHERE id=$2
+        RETURNING bio`,
+        [bio, userID]
+    );
 };

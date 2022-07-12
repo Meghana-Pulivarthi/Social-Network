@@ -4,13 +4,8 @@ export default function Profile({ first, last, imgurl, modalCallBack }) {
 
     return (
         <div>
-            <h3>
-                Profile component should be on top right corner.
-                <br />
-                My name is {first} and my last name is
-                {last}
-            </h3>
             <img
+                className="profile-pic"
                 onClick={() => modalCallBack()}
                 src={imgurl}
                 alt={(first, last)}

@@ -2,7 +2,7 @@ import { Component } from "react";
 import Logo from "./logo";
 import Profile from "./profile";
 import Upload from "./uploader";
-// import Profilecontent from "./profilecontent";
+import Profilecontent from "./profilecontent";
 
 export default class App extends Component {
     constructor() {
@@ -12,6 +12,7 @@ export default class App extends Component {
             last: "xcv",
             imgurl: "",
             uploadIsVisible: false,
+            bio: "",
         };
     }
     componentDidMount() {
@@ -25,6 +26,7 @@ export default class App extends Component {
                     first: data.userInfo.first,
                     last: data.userInfo.last,
                     imgurl: data.userInfo.imgurl,
+                    bio: data.userInfo.bio,
                 });
             });
     }
@@ -44,6 +46,18 @@ export default class App extends Component {
             imgurl: arg,
         });
     }
+    // you're going to want to create a method in app that is responsible for setting the official bio in App's state
+
+    setBio(newBio) {
+        // the responsibility of this fn is to store this argument in Apps state
+        // this function is created in App but needs to be called in BioEditor
+        // it expects to be passed the official bio
+        // make sure you log the argument to ensure you're actually getting it from BioEditor
+        this.setState({
+            bio: newBio,
+        });
+    }
+
     render() {
         return (
             <div>
@@ -55,14 +69,13 @@ export default class App extends Component {
                     imgurl={this.state.imgurl}
                     modalCallBack={() => this.toggleModal()}
                 />
-                {/* <Profilecontent
+                <Profilecontent
                     first={this.state.first}
                     last={this.state.last}
                     imgurl={this.state.imgurl}
-                    modalCallBack={() => {
-                        this.toggleModal();
-                    }}
-                /> */}
+                    bio={this.state.bio}
+                    setBio={(e) => this.setBio(e)}
+                />
                 {this.state.uploadIsVisible && (
                     <Upload
                         imageUpload={(t) => this.imageUpload(t)}
