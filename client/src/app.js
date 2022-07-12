@@ -16,10 +16,6 @@ export default class App extends Component {
     }
     componentDidMount() {
         console.log("App mounted");
-        // HERE is where we want to make a fetch request to 'GET' info about logged in or newly registered user
-        // we care about: first name, last name, profilepicurl (we don't have yet)
-        // the route `/user.json` is a good path for it
-        // when we have the info from the server, add it to the state of this component using setState.
 
         fetch("/user")
             .then((res) => res.json())
@@ -38,7 +34,7 @@ export default class App extends Component {
             uploadIsVisible: !this.state.uploadIsVisible,
         });
     }
-    methodInApp(arg) {
+    imageUpload(arg) {
         console.log(
             "method is running in app and argument is passed to it is:",
             arg
@@ -68,7 +64,10 @@ export default class App extends Component {
                     }}
                 /> */}
                 {this.state.uploadIsVisible && (
-                    <Upload methodInApp={(t) => this.methodInApp(t)} />
+                    <Upload
+                        imageUpload={(t) => this.imageUpload(t)}
+                        modalCallBack={() => this.toggleModal()}
+                    />
                 )}
             </div>
         );

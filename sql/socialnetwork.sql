@@ -14,6 +14,6 @@ CREATE TABLE users (
   CREATE TABLE reset_codes(
     id SERIAL PRIMARY KEY,
     email VARCHAR NOT NULL REFERENCES users(email)  ,
-    code VARCHAR NOT NULL,
+    code VARCHAR NOT NULL,  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
