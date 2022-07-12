@@ -198,15 +198,6 @@ app.post("/upload", uploader.single("upload"), s3.upload, (req, res) => {
             console.log("Error in add Images", err);
         });
 });
-// app.get("/bioedit", (req, res) => {
-//     db.getProfile(req.session.userID).then((results) => {
-//         const userProfile = results.rows[0];
-//         console.log("userInfo", userProfile);
-//         res.json({
-//             userProfile,
-//         });
-//     });
-// });
 app.post("/bioedit", (req, res) => {
     db.addBio(req.body.bio, req.session.userID)
         .then((result) => {

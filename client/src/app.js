@@ -61,8 +61,9 @@ export default class App extends Component {
     render() {
         return (
             <div>
-                <h1>I am the main entry point for logged in experience</h1>
-                <Logo />
+                <header>
+                    <Logo />
+                </header>
                 <Profile
                     first={this.state.first}
                     last={this.state.last}

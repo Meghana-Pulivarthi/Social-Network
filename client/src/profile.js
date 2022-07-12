@@ -4,12 +4,14 @@ export default function Profile({ first, last, imgurl, modalCallBack }) {
 
     return (
         <div>
-            <img
-                className="profile-pic"
-                onClick={() => modalCallBack()}
-                src={imgurl}
-                alt={(first, last)}
-            />
+            <header>
+                <img
+                    id="profile-pic"
+                    onClick={() => modalCallBack()}
+                    src={imgurl}
+                    alt={(first, last)}
+                />
+            </header>
         </div>
     );
 }

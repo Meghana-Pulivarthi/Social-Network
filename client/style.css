@@ -20,20 +20,33 @@ body {
     background: linear-gradient(#eeefef, #ffffff 10%);
 }
 
-#logo{
-    display: flex;
-    justify-content: center;
-    /* width: 300px; */
+#profile-pic {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    float: right;
+    border: 2px solid black;
 }
 
-/* .profile-pic{
-    position: fixed;
-    left: 0px;
-
-}
-
-.profile-content{
+#profile-content {
     position: fixed;
     top: 200px;
     left: 200px;
-} */
+}
+#logo {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 2px solid red;
+}
+
+#logomain {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 2px solid red;
+}
+#bio {
+    text-align: center;
+    text-decoration: dashed;
+}

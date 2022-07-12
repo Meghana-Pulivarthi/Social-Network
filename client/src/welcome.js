@@ -8,9 +8,9 @@ export default function Welcome() {
     return (
         <div>
             <h1>Welcome to my Social Network!</h1>
-            <div id="logo">
-                <img src="/logo.jpg" alt="logo" />
-            </div>
+            <header>
+                <img id="logomain" src="/logo.jpg" alt="logo" />
+            </header>
             <BrowserRouter>
                 <div>
                     <Route exact path="/">

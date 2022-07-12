@@ -4,7 +4,7 @@ import Bioeditor from "./bioeditor";
 export default function Profilecontent(props) {
     console.log("Props in profile content", props);
     return (
-        <div className="profile-content">
+        <div id="profile-content">
             <h2>
                 {props.first} {props.last}
             </h2>
