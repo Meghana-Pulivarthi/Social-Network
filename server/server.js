@@ -186,7 +186,7 @@ const uploader = multer({
     limits: { fileSize: 2097152 },
 });
 
-app.post("/upload", uploader.single("upload"), s3.upload, (req, res) => {
+app.post("/uploadbio", uploader.single("upload"), s3.upload, (req, res) => {
     console.log("https://s3.amazonaws.com/spicedling/" + req.file.filename);
     const imgurl = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
     db.addImg(imgurl, req.session.userID)
@@ -207,6 +207,29 @@ app.post("/bioedit", (req, res) => {
         .catch((err) => {
             console.log("Error in add bio", err);
         });
+});
+app.get("/findusers", (req, res) => {
+    if (req.query.userSearch) {
+        db.getmatchingusers(req.query.userSearch)
+            .then((result) => {
+                console.log("/findusers route has been hit");
+                // console.log(result.rows, "result in rows");
+                const data = result.rows;
+                res.json({ data });
+            })
+            .catch((err) => {
+                console.log("err in get matching users", err);
+            });
+    } else {
+        db.findPeople()
+            .then((result) => {
+                const data = result.rows;
+                res.json({ data });
+            })
+            .catch((err) => {
+                console.log("err in findpeopple", err);
+            });
+    }
 });
 
 app.get("/logout", (req, res) => {

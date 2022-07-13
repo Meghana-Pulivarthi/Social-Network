@@ -10,12 +10,6 @@ export default class Registration extends Component {
         //binding this
         // this.handleChange = this.handleChange.bind(this);
     }
-    //to do:
-    //1. render 4 input fields + button ✅
-    //2. capture the user's input and store it state ✅
-    //3. when the user submits, we want to send the data to the server
-    //4. if something goes wrong, conditonally render an err msg
-    //5. if everything goes well , show logo
 
     handleChange(e) {
         //console.log("Handle change is running");

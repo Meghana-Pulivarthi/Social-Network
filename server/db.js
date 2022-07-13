@@ -81,3 +81,14 @@ module.exports.addBio = (bio, userID) => {
         [bio, userID]
     );
 };
+
+module.exports.findPeople = () => {
+    return db.query(`SELECT * 
+    FROM users
+    ORDER BY id 
+    DESC LIMIT 3`);
+};
+
+module.exports.getmatchingusers = (val) => {
+    return db.query(`SELECT * FROM users WHERE first ILIKE $1;`, [val + "%"]);
+};
