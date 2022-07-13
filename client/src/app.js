@@ -65,9 +65,11 @@ export default class App extends Component {
                         <header>
                             <Logo />
                         </header>
-                        <Link to="/find">Find Friends</Link>;
-                        <Link to="/">My Profile</Link>;
-                            
+                        <Link to="/find">Find Friends</Link>
+                        <br></br>
+                        <Link to="/">My Profile</Link>
+                        <br></br>
+                        <Link to="/">Logout</Link>
                     </nav>
                     <Profile
                         first={this.state.first}

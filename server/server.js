@@ -209,6 +209,8 @@ app.post("/bioedit", (req, res) => {
         });
 });
 app.get("/findusers", (req, res) => {
+    // console.log("req.query",req.query.userSearch
+    //     )
     if (req.query.userSearch) {
         db.getmatchingusers(req.query.userSearch)
             .then((result) => {

@@ -11,17 +11,19 @@ export default function FindPeople() {
             // console.log("useEffect in hello.js ran");
             try {
                 console.log("searchInput right now", searchInput);
-                const respBody = await fetch(`/findusers?=${searchInput}`);
-
-                const res = await respBody.json();
-                console.log("res", res);
+                const respBody = await fetch(
+                    `/findusers?userSearch=${searchInput}`
+                );
+                console.log("respbody", respBody);
+                const result = await respBody.json();
+                console.log("result", result);
                 if (!abort) {
-                    setUsers(res.data);
+                    setUsers(result.data);
                 } else {
                     console.log("ignore don't run a a state update");
                 }
             } catch (err) {
-                console.log("err on fetch spicedworld", err);
+                console.log("err on fetch find users", err);
             }
         })(); // this closes the async iife
         return () => {
@@ -40,24 +42,25 @@ export default function FindPeople() {
             <h2>Find People</h2>
             <input
                 onChange={handleInputChange}
-                // type="text"
+                type="text"
                 name="userSearch"
-                // value={setSearchInput}
+                value={searchInput}
             />
             <ul>
-                {users&&users.map((users, id) => {
-                    // console.log("user", user);
-                    // console.log("id", id);
-                    return (
-                        <li key={users.id}>
-                            <img
-                                src={users.imgurl}
-                                alt={(users.first, users.last)}
-                            />
-                            {users.first} {users.last}
-                        </li>
-                    );
-                })}
+                {users &&
+                    users.map((users, id) => {
+                        // console.log("user", user);
+                        // console.log("id", id);
+                        return (
+                            <li key={users.id}>
+                                <img
+                                    src={users.imgurl}
+                                    alt={(users.first, users.last)}
+                                />
+                                {users.first} {users.last} {users.bio}
+                            </li>
+                        );
+                    })}
             </ul>
         </>
     );

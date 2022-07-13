@@ -1,6 +1,6 @@
-body {
+/* body {
     background-color: ghostwhite;
-}
+} */
 /* .some-class {
     background-color: blue;
 } */
@@ -30,8 +30,8 @@ body {
 
 #profile-content {
     position: fixed;
-    top: 300px;
-    left: 200px;
+    top: 400px;
+    left: 400px;
 }
 #logo {
     height: 100px;
@@ -56,7 +56,7 @@ html, body {
   height:100%;
 }
 
-/* body {
+body {
     background: linear-gradient(-45deg, #e7b3a4, #f6b5ce, #91c4d6, #d8e8aa);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
@@ -72,7 +72,7 @@ html, body {
     100% {
         background-position: 0% 50%;
     }
-} */
+}
 
 
 
