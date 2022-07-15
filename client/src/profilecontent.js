@@ -8,7 +8,10 @@ export default function Profilecontent(props) {
             <h2>
                 {props.first} {props.last}
             </h2>
-            <Profile imgurl={props.imgurl} />
+            <Profile
+                imgurl={props.imgurl}
+                modalCallBack={() => this.toggleModal()}
+            />
             <Bioeditor bio={props.bio} setBio={(arg) => props.setBio(arg)} />
         </div>
     );

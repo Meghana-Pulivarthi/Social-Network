@@ -186,7 +186,7 @@ const uploader = multer({
     limits: { fileSize: 2097152 },
 });
 
-app.post("/uploadbio", uploader.single("upload"), s3.upload, (req, res) => {
+app.post("/upload", uploader.single("upload"), s3.upload, (req, res) => {
     console.log("https://s3.amazonaws.com/spicedling/" + req.file.filename);
     const imgurl = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
     db.addImg(imgurl, req.session.userID)
@@ -231,6 +231,44 @@ app.get("/findusers", (req, res) => {
             .catch((err) => {
                 console.log("err in findpeopple", err);
             });
+    }
+});
+
+app.get("/api/find/:id", async (req, res) => {
+    console.log("req.session.userId", req.session.userID);
+    console.log("req.params.id", req.params.id);
+    if (!isNaN(req.params.id)) {
+        if (req.session.userID == req.params.id) {
+            res.json({
+                sameUser: true,
+            });
+        } else {
+            try {
+                const results = await db.getProfile(req.params.id);
+                console.log("results in /api/find/:id", results);
+                const profile = results.rows[0];
+                if (!profile) {
+                    res.json({
+                        noUser: true,
+                    });
+                } else {
+                    res.json({
+                        match: true,
+                        profile,
+                    });
+                }
+            } catch (error) {
+                console.log("error in fetching user's profile ", err);
+                res.json({
+                    match: false,
+                    error: true,
+                });
+            }
+        }
+    } else {
+        res.json({
+            ownProfile: true,
+        });
     }
 });
 

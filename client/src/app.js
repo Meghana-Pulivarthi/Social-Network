@@ -7,6 +7,8 @@ import Profile from "./profile";
 import Upload from "./uploader";
 import Profilecontent from "./profilecontent";
 import FindPeople from "./findpeople";
+import OtherProfile from "./otherprofile";
+// import Logout from "./logout";
 
 export default class App extends Component {
     constructor() {
@@ -61,29 +63,33 @@ export default class App extends Component {
         return (
             <BrowserRouter>
                 <div>
+                    <header>
+                        {/* <Route exact path="/"> */}
+                        <Profile
+                            first={this.state.first}
+                            last={this.state.last}
+                            imgurl={this.state.imgurl}
+                            modalCallBack={() => this.toggleModal()}
+                        />
+                        {/* </Route> */}
+
+                        <Logo />
+                    </header>
                     <nav>
-                        <header>
-                            <Logo />
-                        </header>
                         <Link to="/find">Find Friends</Link>
                         <br></br>
                         <Link to="/">My Profile</Link>
                         <br></br>
-                        <Link to="/">Logout</Link>
+                        {/* <Link to="/logout">Logout</Link> */}
                     </nav>
-                    <Profile
-                        first={this.state.first}
-                        last={this.state.last}
-                        imgurl={this.state.imgurl}
-                        modalCallBack={() => this.toggleModal()}
-                    />
-                    <Route path="/">
+                    <Route exact path="/">
                         <Profilecontent
                             first={this.state.first}
                             last={this.state.last}
                             imgurl={this.state.imgurl}
                             bio={this.state.bio}
                             setBio={(e) => this.setBio(e)}
+                            modalCallBack={() => this.toggleModal()}
                         />
                     </Route>
                     {this.state.uploadIsVisible && (
@@ -92,9 +98,15 @@ export default class App extends Component {
                             modalCallBack={() => this.toggleModal()}
                         />
                     )}
-                    <Route path="/find">
+                    <Route path="/find/:otherProfile">
+                        <OtherProfile />
+                    </Route>
+                    <Route exact path="/find">
                         <FindPeople />
                     </Route>
+                    {/* <Route exact path="/logout">
+                        <Logout />
+                    </Route> */}
                 </div>
             </BrowserRouter>
         );
