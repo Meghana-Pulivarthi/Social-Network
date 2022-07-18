@@ -58,7 +58,6 @@ export default class App extends Component {
             bio: newBio,
         });
     }
-
     render() {
         return (
             <BrowserRouter>
@@ -75,23 +74,24 @@ export default class App extends Component {
 
                         <Logo />
                     </header>
-                    <nav>
+                    <nav id="navbar">
+                        <br></br>
+
                         <Link to="/find">Find Friends</Link>
-                        <br></br>
-                        <Link to="/">My Profile</Link>
-                        <br></br>
-                        {/* <Link to="/logout">Logout</Link> */}
+                        {/* <Link to="/">Upload Profile Picture</Link> */}
+                        <Link to="/profile">My Profile</Link>
                     </nav>
-                    <Route exact path="/">
-                        <Profilecontent
-                            first={this.state.first}
-                            last={this.state.last}
-                            imgurl={this.state.imgurl}
-                            bio={this.state.bio}
-                            setBio={(e) => this.setBio(e)}
-                            modalCallBack={() => this.toggleModal()}
-                        />
-                    </Route>
+                        <Route exact path="/profile">
+                            <Profilecontent
+                                first={this.state.first}
+                                last={this.state.last}
+                                imgurl={this.state.imgurl}
+                                bio={this.state.bio}
+                                setBio={(e) => this.setBio(e)}
+                                modalCallBack={() => this.toggleModal()}
+                            />
+                        </Route>
+
                     {this.state.uploadIsVisible && (
                         <Upload
                             imageUpload={(t) => this.imageUpload(t)}
@@ -104,9 +104,6 @@ export default class App extends Component {
                     <Route exact path="/find">
                         <FindPeople />
                     </Route>
-                    {/* <Route exact path="/logout">
-                        <Logout />
-                    </Route> */}
                 </div>
             </BrowserRouter>
         );

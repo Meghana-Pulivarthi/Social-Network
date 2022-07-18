@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router";
-import Profile from "./profile";
 import Friendbutton from "./friendButton";
 
 export default function OtherProfile() {
     const [user, setUser] = useState({});
-//  const [err, setErr] = useState();
 
     const history = useHistory();
     // const params = useParams();
@@ -13,15 +11,15 @@ export default function OtherProfile() {
     const { otherProfile } = useParams();
 
     useEffect(() => {
-        console.log("other profile just rendered");
-        console.log("otherProfile", otherProfile);
+        // console.log("other profile just rendered");
+        // console.log("otherProfile", otherProfile);
 
         let abort = false;
         if (!abort) {
             fetch(`/api/find/${otherProfile}`)
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log("data otherProfile",data)
+                    // console.log("data otherProfile",data)
                     if (data.sameUser) {
                         history.push("/");
                     } else if (data.noUser) {
@@ -53,7 +51,7 @@ export default function OtherProfile() {
                     <h1> User Not Found!</h1>
                 </div>
             )}
-            <Friendbutton />
+            <Friendbutton viewedUser={otherProfile} />
         </>
     );
 }

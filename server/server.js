@@ -43,7 +43,7 @@ app.post("/register", (req, res) => {
                 hashpasswd
             )
                 .then((result) => {
-                    console.log("Result in db.adduser", result.rows);
+                    //console.log("Result in db.adduser", result.rows);
                     req.session.userID = result.rows[0].id;
                     console.log(
                         "req.session after setting userID: ",
@@ -115,11 +115,11 @@ app.post("/password/reset/start", (req, res) => {
 app.post("/password/reset/verify", (req, res) => {
     db.verifyCode(req.body.email)
         .then((result) => {
-            console.log(
-                "result.rows[result.rows.length - 1].secretCode",
-                result.rows[result.rows.length - 1]
-            );
-            console.log("req.body.code", req.body.code);
+            // console.log(
+            //     "result.rows[result.rows.length - 1].secretCode",
+            //     result.rows[result.rows.length - 1]
+            // );
+            // console.log("req.body.code", req.body.code);
             if (result.rows[result.rows.length - 1].code == req.body.code) {
                 console.log("yayy its match");
                 bcrypt
@@ -127,7 +127,7 @@ app.post("/password/reset/verify", (req, res) => {
                     .then((hashpasswd) => {
                         db.newPwd(hashpasswd, req.body.email)
                             .then((result) => {
-                                console.log("Result in db.newpwd", result.rows);
+                                // console.log("Result in db.newpwd", result.rows);
                                 req.session.userID = result.rows[0].id;
 
                                 res.json({ success: true });
@@ -187,11 +187,11 @@ const uploader = multer({
 });
 
 app.post("/upload", uploader.single("upload"), s3.upload, (req, res) => {
-    console.log("https://s3.amazonaws.com/spicedling/" + req.file.filename);
-    const imgurl = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
+    // console.log("https://s3.amazonaws.com/spicedling/" + req.file.filename);
+    // const imgurl = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
     db.addImg(imgurl, req.session.userID)
         .then((result) => {
-            console.log("result.rows[0]", result.rows[0].imgurl);
+          //  console.log("result.rows[0]", result.rows[0].imgurl);
             res.json({ data: result.rows[0].imgurl });
         })
         .catch((err) => {
@@ -201,7 +201,7 @@ app.post("/upload", uploader.single("upload"), s3.upload, (req, res) => {
 app.post("/bioedit", (req, res) => {
     db.addBio(req.body.bio, req.session.userID)
         .then((result) => {
-            console.log("result.rows[0]", result.rows[0].bio);
+            //console.log("result.rows[0]", result.rows[0].bio);
             res.json({ payload: result.rows[0] });
         })
         .catch((err) => {
@@ -214,7 +214,7 @@ app.get("/findusers", (req, res) => {
     if (req.query.userSearch) {
         db.getmatchingusers(req.query.userSearch)
             .then((result) => {
-                console.log("/findusers route has been hit");
+                // console.log("/findusers route has been hit");
                 // console.log(result.rows, "result in rows");
                 const data = result.rows;
                 res.json({ data });
@@ -235,8 +235,8 @@ app.get("/findusers", (req, res) => {
 });
 
 app.get("/api/find/:id", async (req, res) => {
-    console.log("req.session.userId", req.session.userID);
-    console.log("req.params.id", req.params.id);
+    // console.log("req.session.userId", req.session.userID);
+    // console.log("req.params.id", req.params.id);
     if (!isNaN(req.params.id)) {
         if (req.session.userID == req.params.id) {
             res.json({
@@ -245,7 +245,7 @@ app.get("/api/find/:id", async (req, res) => {
         } else {
             try {
                 const results = await db.getProfile(req.params.id);
-                console.log("results in /api/find/:id", results);
+                // console.log("results in /api/find/:id", results);
                 const profile = results.rows[0];
                 if (!profile) {
                     res.json({
@@ -268,6 +268,111 @@ app.get("/api/find/:id", async (req, res) => {
     } else {
         res.json({
             ownProfile: true,
+        });
+    }
+});
+const buttonValues = {
+    add: "Add Friend",
+    accept: "Accept Friend Request",
+    cancel: "Cancel Friend Request",
+    remove: "Unfriend",
+};
+
+
+app.get("/api/relation/:viewedUser", async (req, res) => {
+    try {
+        const results = await db.friendshipRelation(
+            req.session.userID,
+            req.params.viewedUser
+        );
+        const userRelation = results.rows[0];
+
+        if (!userRelation) {
+            res.json({
+                buttonTxt: buttonValues.add,
+            });
+        } else {
+            if (userRelation.accepted) {
+                res.json({
+                    buttonTxt: buttonValues.remove,
+                });
+            } else {
+                if (userRelation.sender_id == req.session.userID) {
+                    res.json({
+                        buttonTxt: buttonValues.cancel,
+                    });
+                } else if (userRelation.recipient_id == req.session.userID) {
+                    res.json({
+                        buttonTxt: buttonValues.accept,
+                    });
+                } else {
+                    res.json({
+                        success: false,
+                        error: true,
+                    });
+                }
+            }
+        }
+    } catch (err) {
+        console.log("error in fetching users' relation ", err);
+        res.json({
+            success: false,
+            error: true,
+        });
+    }
+});
+
+//handling friendship button
+
+app.post("/api/requestHandle/:viewedUser", async (req, res) => {
+    if (req.body.buttonTxt === buttonValues.add) {
+        try {
+            await db.friendrequest(
+                req.session.userID,
+                req.params.viewedUser
+            );
+            res.json({
+                buttonTxt: buttonValues.cancel,
+            });
+        } catch (err) {
+            console.log("error in fetching users' relation ", err);
+            res.json({
+                success: false,
+                error: true,
+            });
+        }
+    } else if (req.body.buttonTxt === buttonValues.accept) {
+        try {
+            await db.acceptedrequest(req.session.userID);
+            res.json({
+                buttonText: buttonValues.remove,
+            });
+        } catch (err) {
+            console.log("error in fetching users' relation ", err);
+            res.json({
+                success: false,
+                error: true,
+            });
+        }
+    } else if (
+        req.body.buttonTxt === buttonValues.cancel ||
+        req.body.buttonTxt === buttonValues.remove
+    ) {
+        try {
+            await db.unfriend(req.session.userID);
+            res.json({
+                buttonTxt: buttonValues.add,
+            });
+        } catch (err) {
+            console.log("error in fetching users' relation ", err);
+            res.json({
+                success: false,
+                error: true,
+            });
+        }
+    } else {
+        res.json({
+            success: false,
         });
     }
 });

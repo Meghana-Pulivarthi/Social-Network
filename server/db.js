@@ -67,9 +67,11 @@ module.exports.addImg = (imgurl, userID) => {
 };
 
 module.exports.getProfile = (id) => {
-    return db.query(`SELECT first, last, imgurl, bio FROM users WHERE id=$1 `, [
-        id,
-    ]);
+    return db.query(
+        `SELECT first, last, imgurl, bio FROM users 
+    WHERE id=$1 `,
+        [id]
+    );
 };
 
 module.exports.addBio = (bio, userID) => {
@@ -90,5 +92,44 @@ module.exports.findPeople = () => {
 };
 
 module.exports.getmatchingusers = (val) => {
-    return db.query(`SELECT * FROM users WHERE first ILIKE $1;`, [val + "%"]);
+    return db.query(
+        `SELECT * FROM users 
+    WHERE first ILIKE $1;`,
+        [val + "%"]
+    );
+};
+module.exports.friendshipRelation = (loggedUser, viewedUser) => {
+    const q = `SELECT * FROM friendships
+     WHERE (recipient_id = $1 AND sender_id = $2)
+     OR (recipient_id = $2 AND sender_id = $1)`;
+
+    const param = [loggedUser, viewedUser];
+    return db.query(q, param);
+};
+
+module.exports.friendrequest = (sender, recipient) => {
+    const q = `INSERT INTO friendships(sender_id, recipient_id)
+     VALUES ($1, $2)
+    `;
+    const param = [sender, recipient];
+    return db.query(q, param);
+};
+
+module.exports.acceptedrequest = (recipient) => {
+    const q = `UPDATE friendships
+    SET accepted = true
+    WHERE recipient_id = $1 
+    `;
+
+    const param = [recipient];
+    return db.query(q, param);
+};
+
+module.exports.unfriend = (loggedUser) => {
+    return db.query(
+        `DELETE FROM friendships
+      WHERE recipient_id = $1
+      OR sender_id = $1`,
+        [loggedUser]
+    );
 };

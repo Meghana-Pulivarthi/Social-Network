@@ -7,10 +7,14 @@ import Reset from "./resetpassword";
 export default function Welcome() {
     return (
         <div>
-            <h1>Welcome to my Social Network!</h1>
             <header>
                 <img id="logomain" src="/logo.jpg" alt="logo" />
             </header>
+            <h2 id="intro">
+                Hello cricket enthusiasts! Join us and find friends with common
+                interest Cricket.
+            </h2>
+
             <BrowserRouter>
                 <div>
                     <Route exact path="/">

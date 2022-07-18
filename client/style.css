@@ -1,9 +1,6 @@
 /* body {
     background-color: ghostwhite;
 } */
-/* .some-class {
-    background-color: blue;
-} */
 #register,
 #login,
 #reset_pwd {
@@ -15,7 +12,7 @@
 
     /* Styles */
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 3px 7px rgba(0, 0, 0, 0.3),
-        inset 0 1px rgba(255, 255, 255, 1), inset 0 -3px 2px rgba(0, 0, 0, 0.25);
+        inset 0 1px rgb(255, 255, 255), inset 0 -3px 2px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     background: linear-gradient(#eeefef, #ffffff 10%);
 }
@@ -26,13 +23,10 @@
     border-radius: 50%;
     float: right;
     border: 2px solid black;
-    /* top: 0px; */
 }
 
 #profile-content {
     position: relative;
-    /* top: 400px;
-    left: 400px; */
     height: 50%;
     width: 50%;
 }
@@ -64,6 +58,9 @@ body {
     background: linear-gradient(-45deg, #e7b3a4, #f6b5ce, #91c4d6, #d8e8aa);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
+        /* background-image: url("cricket.jpg"); */
+    /* opacity: 1; */
+
 }
 
 @keyframes gradient {
@@ -88,3 +85,11 @@ body {
     padding: 10px;
 }
 
+#navbar {
+    display: grid;
+    justify-content: center;
+}
+
+#intro {
+    text-align: center;
+}
