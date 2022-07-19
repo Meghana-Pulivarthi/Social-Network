@@ -31,6 +31,7 @@ app.use(
         sameSite: true,
     })
 );
+//////////////////////Register///////////////////
 app.post("/register", (req, res) => {
     // console.log("req body value", req.body);
     bcrypt
@@ -60,6 +61,8 @@ app.post("/register", (req, res) => {
             console.log("Error in Post Register ", err);
         });
 });
+
+///////////////////Login/////////////////////////
 app.post("/login", (req, res) => {
     // console.log("req body value", req.body);
 
@@ -89,6 +92,7 @@ app.post("/login", (req, res) => {
         });
 });
 
+////////////////////Password Reset//////////////////////
 app.post("/password/reset/start", (req, res) => {
     db.getEmail(req.body.email)
         .then((result) => {
@@ -153,6 +157,7 @@ app.post("/password/reset/verify", (req, res) => {
             console.log("Error in verify email password verify", err);
         });
 });
+///////////////logged in user profile//////////////////////
 app.get("/user/id.json", function (req, res) {
     res.json({
         userID: req.session.userID,
@@ -191,13 +196,15 @@ app.post("/upload", uploader.single("upload"), s3.upload, (req, res) => {
     // const imgurl = "https://s3.amazonaws.com/spicedling/" + req.file.filename;
     db.addImg(imgurl, req.session.userID)
         .then((result) => {
-          //  console.log("result.rows[0]", result.rows[0].imgurl);
+            //  console.log("result.rows[0]", result.rows[0].imgurl);
             res.json({ data: result.rows[0].imgurl });
         })
         .catch((err) => {
             console.log("Error in add Images", err);
         });
 });
+
+///////////////Bio//////////////////////
 app.post("/bioedit", (req, res) => {
     db.addBio(req.body.bio, req.session.userID)
         .then((result) => {
@@ -208,6 +215,8 @@ app.post("/bioedit", (req, res) => {
             console.log("Error in add bio", err);
         });
 });
+
+////////////////find other user///////////////
 app.get("/findusers", (req, res) => {
     // console.log("req.query",req.query.userSearch
     //     )
@@ -234,6 +243,7 @@ app.get("/findusers", (req, res) => {
     }
 });
 
+/////////////////find particular person//////////////
 app.get("/api/find/:id", async (req, res) => {
     // console.log("req.session.userId", req.session.userID);
     // console.log("req.params.id", req.params.id);
@@ -271,13 +281,14 @@ app.get("/api/find/:id", async (req, res) => {
         });
     }
 });
+
+////////////////Accept, Delete, Unfriend///////////////
 const buttonValues = {
     add: "Add Friend",
     accept: "Accept Friend Request",
     cancel: "Cancel Friend Request",
     remove: "Unfriend",
 };
-
 
 app.get("/api/relation/:viewedUser", async (req, res) => {
     try {
@@ -327,10 +338,7 @@ app.get("/api/relation/:viewedUser", async (req, res) => {
 app.post("/api/requestHandle/:viewedUser", async (req, res) => {
     if (req.body.buttonTxt === buttonValues.add) {
         try {
-            await db.friendrequest(
-                req.session.userID,
-                req.params.viewedUser
-            );
+            await db.friendrequest(req.session.userID, req.params.viewedUser);
             res.json({
                 buttonTxt: buttonValues.cancel,
             });
@@ -375,6 +383,35 @@ app.post("/api/requestHandle/:viewedUser", async (req, res) => {
             success: false,
         });
     }
+});
+
+/////////List of friends and wannabees//////////
+app.get(`/friendsandwannabees`, (req, res) => {
+    db.getFriendsWannabees(req.session.userID)
+        .then((result) => {
+            const data = result.rows;
+            res.json({ friends: data });
+        })
+        .catch((err) => {
+            console.log("err in get /friendsandwannabees", err);
+        });
+});
+
+app.post("/acceptfriend/:id", (req, res) => {
+    console.log("accept friend ");
+    db.acceptedrequest(req.session.userID).then((result) => {
+        res.json({
+            buttonText: buttonValues.remove,
+        });
+    });
+});
+app.post("/deletefriend/:id", (req, res) => {
+    console.log("delete friend");
+    db.unfriend(req.session.userID).then((result) => {
+        res.json({
+            buttonTxt: buttonValues.add,
+        });
+    });
 });
 
 app.get("/logout", (req, res) => {

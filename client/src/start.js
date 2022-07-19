@@ -1,16 +1,34 @@
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
 import App from "./app";
+import { createStore, applyMiddleware } from "redux";
+import * as immutableState from "redux-immutable-state-invariant";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { Provider } from "react-redux";
+import rootReducer from "./redux/reducer";
+
+//creating store i.e where our global state lives
+const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(immutableState.default()))
+);
 
 // import HelloWorld from "./helloWorld";
 
 fetch("/user/id.json")
     .then((response) => response.json())
     .then((data) => {
-        console.log("data in start.js: ", data);
+        // console.log("data in start.js: ", data);
         if (!data.userID) {
             ReactDOM.render(<Welcome />, document.querySelector("main"));
         } else {
-            ReactDOM.render(<App />, document.querySelector("main"));
+            ReactDOM.render(
+                // store is a props
+                <Provider store={store}>
+                    <App />
+                </Provider>,
+
+                document.querySelector("main")
+            );
         }
     });

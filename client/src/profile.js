@@ -1,6 +1,6 @@
 export default function Profile({ first, last, imgurl, modalCallBack }) {
     imgurl = imgurl || "/default.jpg";
-    console.log("Image url", imgurl);
+    // console.log("Image url", imgurl);
 
     return (
         <div>

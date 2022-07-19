@@ -8,6 +8,8 @@ import Upload from "./uploader";
 import Profilecontent from "./profilecontent";
 import FindPeople from "./findpeople";
 import OtherProfile from "./otherprofile";
+import FriendsWannabee from "./friends-wannabee";
+
 // import Logout from "./logout";
 
 export default class App extends Component {
@@ -22,12 +24,12 @@ export default class App extends Component {
         };
     }
     componentDidMount() {
-        console.log("App mounted");
+        // console.log("App mounted");
 
         fetch("/user")
             .then((res) => res.json())
             .then((data) => {
-                console.log("data in /users", data);
+                // console.log("data in /users", data);
                 this.setState({
                     first: data.userInfo.first,
                     last: data.userInfo.last,
@@ -76,21 +78,24 @@ export default class App extends Component {
                     </header>
                     <nav id="navbar">
                         <br></br>
-
-                        <Link to="/find">Find Friends</Link>
+                        <Link to="/find">Find Friends&nbsp;</Link>
                         {/* <Link to="/">Upload Profile Picture</Link> */}
-                        <Link to="/profile">My Profile</Link>
+                        <Link to="/profile">My Profile&nbsp;</Link>
+                        <Link to="/friendswannabee">
+                            FriendsAndWannabee&nbsp;
+                        </Link>
+                        &nbsp;
                     </nav>
-                        <Route exact path="/profile">
-                            <Profilecontent
-                                first={this.state.first}
-                                last={this.state.last}
-                                imgurl={this.state.imgurl}
-                                bio={this.state.bio}
-                                setBio={(e) => this.setBio(e)}
-                                modalCallBack={() => this.toggleModal()}
-                            />
-                        </Route>
+                    <Route exact path="/profile">
+                        <Profilecontent
+                            first={this.state.first}
+                            last={this.state.last}
+                            imgurl={this.state.imgurl}
+                            bio={this.state.bio}
+                            setBio={(e) => this.setBio(e)}
+                            modalCallBack={() => this.toggleModal()}
+                        />
+                    </Route>
 
                     {this.state.uploadIsVisible && (
                         <Upload
@@ -103,6 +108,9 @@ export default class App extends Component {
                     </Route>
                     <Route exact path="/find">
                         <FindPeople />
+                    </Route>
+                    <Route path="/friendswannabee">
+                        <FriendsWannabee />
                     </Route>
                 </div>
             </BrowserRouter>
