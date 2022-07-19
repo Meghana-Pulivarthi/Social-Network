@@ -82,7 +82,7 @@ export default class App extends Component {
                         {/* <Link to="/">Upload Profile Picture</Link> */}
                         <Link to="/profile">My Profile&nbsp;</Link>
                         <Link to="/friendswannabee">
-                            FriendsAndWannabee&nbsp;
+                            Friends And Wannabees&nbsp;
                         </Link>
                         &nbsp;
                     </nav>

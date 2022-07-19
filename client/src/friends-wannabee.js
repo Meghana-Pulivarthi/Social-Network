@@ -12,12 +12,14 @@ export default function FriendsWannabee() {
 
     const wannabees = useSelector((state) =>
         // console.log("state",state)
-        state.friends.filter((friend) => friend.accepted)
+        state.friends.filter((friend) => !friend.accepted)
     );
+            console.log(" wannabees", wannabees);
+
     //you will need to do same as above for friends
     const friends = useSelector(
         (state) =>
-            state.friends && state.friends.filter((friend) => !!friend.accepted)
+            state.friends && state.friends.filter((friend) => friend.accepted)
     );
     console.log("friends", friends);
 

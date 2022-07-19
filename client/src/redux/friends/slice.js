@@ -22,13 +22,9 @@ export default function friendswannabeeReducer(friends = [], action) {
     if (action.type == `/friendswannabees/delete`) {
         const newFriendsWannabees = friends;
         friends = friends.filter((friend) => {
-            if (friend.id === action.payload.id) {
-                return {
-                    ...friend,
-                    accepted: false,
-                };
-            } else {
+            if (friend.id != action.payload.id) {
                 return friend;
+            
             }
         });
     }
