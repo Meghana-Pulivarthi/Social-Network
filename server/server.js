@@ -399,17 +399,19 @@ app.get(`/friendsandwannabees`, (req, res) => {
 
 app.post("/acceptfriend/:id", (req, res) => {
     console.log("accept friend ");
-    db.acceptedrequest(req.session.userID).then((result) => {
+    db.acceptedrequest(req.session.userID, req.params.id).then((result) => {
         res.json({
-            buttonText: buttonValues.remove,
+            // buttonText: buttonValues.remove,
+            success: true,
         });
     });
 });
 app.post("/deletefriend/:id", (req, res) => {
     console.log("delete friend");
-    db.unfriend(req.session.userID).then((result) => {
+    db.unfriend(req.session.userID, req.params.id).then((result) => {
         res.json({
-            buttonTxt: buttonValues.add,
+            // buttonTxt: buttonValues.add,
+            success: true,
         });
     });
 });

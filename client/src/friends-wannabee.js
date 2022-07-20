@@ -34,20 +34,12 @@ export default function FriendsWannabee() {
                 dispatch(recieveFriendsAndWannabees(data.friends));
             })();
         }
-        //step1 - make a get request to fetch friends and wannabees
-        //once data is back
-        //step 2: dispatch an action creator and pass to it the data you just got back
-        //this will start the process of adding your friends and wannabees
-        //(an big array of object containing both)
     }, []);
     // if (!friends) {
     //     return null;
     // }
 
     const handleAccept = async (id) => {
-        //1. make a post request to update the db
-        // STEP 2 - dispatch an action to update the global state
-        // you'll need to create and import the action creator below
         const res = await fetch(`/acceptfriend/${id}`, { method: "POST" });
         const data = await res.json();
         console.log(`data from /acceptfriend/${id}`, data);
@@ -72,6 +64,8 @@ export default function FriendsWannabee() {
                 friends.map((friend) => {
                     return (
                         <div key={friend.id}>
+                            <img src={friend.imgurl} alt= {`${friend.first} ${friend.last}`}/>
+                    {friend.first} {friend.last}
                             <button onClick={() => handleUnfriend(friend.id)}>
                                 Unfriend
                             </button>
@@ -83,6 +77,8 @@ export default function FriendsWannabee() {
                 wannabees.map((wannabee) => {
                     return (
                         <div key={wannabee.id}>
+                            <img src={wannabee.imgurl} alt={`${wannabee.first} ${wannabee.last}`}/>
+                            {wannabee.first} {wannabee.last}
                             <button onClick={() => handleAccept(wannabee.id)}>
                                 Accept friendship
                             </button>

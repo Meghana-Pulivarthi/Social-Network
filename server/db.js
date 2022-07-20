@@ -115,26 +115,26 @@ module.exports.friendrequest = (sender, recipient) => {
     return db.query(q, param);
 };
 
-module.exports.acceptedrequest = (recipient) => {
+module.exports.acceptedrequest = (sendingreq,receivereq) => {
     const q = `UPDATE friendships
     SET accepted = true
-    WHERE recipient_id = $1 
+    WHERE recipient_id = $1 AND sender_id =$2
     `;
 
-    const param = [recipient];
+    const param = [sendingreq,receivereq];
     return db.query(q, param);
 };
 
-module.exports.unfriend = (loggedUser) => {
+module.exports.unfriend = (loggedUser,otherUser) => {
     return db.query(
         `DELETE FROM friendships
-      WHERE recipient_id = $1
-      OR sender_id = $1`,
-        [loggedUser]
+      WHERE recipient_id = $1 AND sender_id=$2
+      OR sender_id = $1 AND recipient_id=$2`,
+        [loggedUser,otherUser]
     );
 };
 
-module.exports.getFriendsWannabees = (id) => {
+module.exports.getFriendsWannabees = (loggedUser) => {
     return db.query(
         `SELECT users.id, first, last, imgurl, accepted
   FROM friendships
@@ -143,6 +143,6 @@ module.exports.getFriendsWannabees = (id) => {
   OR (accepted = true AND recipient_id = $1 AND sender_id = users.id)
   OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)
 `,
-        [id]
+        [loggedUser]
     );
 };

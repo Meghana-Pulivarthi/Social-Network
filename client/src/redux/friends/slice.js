@@ -3,6 +3,7 @@
 export default function friendswannabeeReducer(friends = [], action) {
     console.log({ friends, action });
     if (action.type == `/friendswannabees/recieve`) {
+        //use spread opreator to prevent mutation
         friends = action.payload.friends;
         // console.log(friends)
     }
@@ -17,10 +18,12 @@ export default function friendswannabeeReducer(friends = [], action) {
             } else {
                 return friend;
             }
+            
         });
+            return friends;
+
     }
     if (action.type == `/friendswannabees/delete`) {
-        const newFriendsWannabees = friends;
         friends = friends.filter((friend) => {
             if (friend.id != action.payload.id) {
                 return friend;
