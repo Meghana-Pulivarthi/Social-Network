@@ -9,6 +9,8 @@ import Profilecontent from "./profilecontent";
 import FindPeople from "./findpeople";
 import OtherProfile from "./otherprofile";
 import FriendsWannabee from "./friends-wannabee";
+import Logout from "./logout";
+import Chat from "./chat"
 
 // import Logout from "./logout";
 
@@ -84,7 +86,8 @@ export default class App extends Component {
                         <Link to="/friendswannabee">
                             Friends And Wannabees&nbsp;
                         </Link>
-                        &nbsp;
+                        <Link to="/chat">Chat&nbsp;</Link>
+                        <Link to="/logout">Log Out&nbsp;</Link>&nbsp;
                     </nav>
                     <Route exact path="/profile">
                         <Profilecontent
@@ -111,6 +114,12 @@ export default class App extends Component {
                     </Route>
                     <Route path="/friendswannabee">
                         <FriendsWannabee />
+                    </Route>
+                    <Route path="/logout">
+                        <Logout />
+                    </Route>
+                    <Route path="/chat">
+                        <Chat />
                     </Route>
                 </div>
             </BrowserRouter>

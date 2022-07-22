@@ -5,7 +5,6 @@ import {
     acceptfriend,
     deletefriend,
 } from "./redux/friends/slice.js";
-import { Link } from "react-router-dom";
 
 export default function FriendsWannabee() {
     const dispatch = useDispatch();
@@ -85,12 +84,6 @@ export default function FriendsWannabee() {
                         </div>
                     );
                 })}
-            <nav>
-                <Link to="/acceptfriend">Accepted&nbsp;</Link>
-                {/* <br/> */}
-                &nbsp;
-                <Link to="/deletefriend">Deleted&nbsp;</Link>
-            </nav>
         </>
     );
 }

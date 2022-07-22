@@ -1,7 +1,7 @@
 //will have mini reducer
 //friends=[] is a property inside global state
 export default function friendswannabeeReducer(friends = [], action) {
-    console.log({ friends, action });
+    // console.log({ friends, action });
     if (action.type == `/friendswannabees/recieve`) {
         //use spread opreator to prevent mutation
         friends = action.payload.friends;
@@ -18,16 +18,13 @@ export default function friendswannabeeReducer(friends = [], action) {
             } else {
                 return friend;
             }
-            
         });
-            return friends;
-
+        return friends;
     }
     if (action.type == `/friendswannabees/delete`) {
         friends = friends.filter((friend) => {
             if (friend.id != action.payload.id) {
                 return friend;
-            
             }
         });
     }

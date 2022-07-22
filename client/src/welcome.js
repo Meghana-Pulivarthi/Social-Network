@@ -12,7 +12,7 @@ export default function Welcome() {
             </header>
             <h2 id="intro">
                 Hello cricket enthusiasts! Join us and find friends with common
-                interest Cricket.
+                interest Cricket 🏏.
             </h2>
 
             <BrowserRouter>

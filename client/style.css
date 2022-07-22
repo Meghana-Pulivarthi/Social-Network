@@ -58,9 +58,8 @@ body {
     background: linear-gradient(-45deg, #e7b3a4, #f6b5ce, #91c4d6, #d8e8aa);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
-        /* background-image: url("cricket.jpg"); */
+    /* background-image: url("cricket.jpg"); */
     /* opacity: 1; */
-
 }
 
 @keyframes gradient {
@@ -92,4 +91,19 @@ body {
 
 #intro {
     text-align: center;
+}
+
+.chat-display-container {
+    width: 75vw;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    height: 300px;
+    /* overflow-y: scroll; */
+    overflow: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.chat-display-container > p {
+    background: whitesmoke;
 }

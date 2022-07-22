@@ -10,6 +10,11 @@ const { sendEmail } = require("./ses.js");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const s3 = require("./s3");
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000")),
+});
 
 app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
@@ -31,6 +36,21 @@ app.use(
         sameSite: true,
     })
 );
+
+const cookieSessionMiddleware = cookieSession({
+    secret: cookie_secret,
+    maxAge: 1000 * 60 * 60 * 24 * 14,
+    sameSite: true,
+});
+
+//this gives sockets access to our request object upon connectsion! So that means we know
+// which userid belongs to which socket upon connecting!
+
+io.use((socket, next) => {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
+
 //////////////////////Register///////////////////
 app.post("/register", (req, res) => {
     // console.log("req body value", req.body);
@@ -426,6 +446,62 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.listen(process.env.PORT || 3001, function () {
+// because sockets can't use an express server we need to have the listening to be done by a node server
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
+});
+
+// BELOW IS ALL THE CODE FOR MY SOCKETS COMMUNICATION
+
+io.on("connection", async (socket) =>{
+    try {
+        if (!socket.request.session.userID) {
+            return socket.disconnect(true);
+        }
+
+        const userID = socket.request.session.userID;
+        console.log(
+            `User with id: ${userID} and socket.id ${socket.id} connected`
+        );
+
+        try {
+            const { rows: messages } = await db.getMessages();
+
+            socket.emit("last10messages", {
+                messages,
+            });
+        } catch (err) {
+            console.log("error while fetching first 10 messages", err);
+        }
+
+        try {
+            socket.on("new-message", async (newMsg) => {
+                const { rows: messageQuery } = await db.getChat(
+                    newMsg,
+                    userID
+                );
+                const { rows: user } = await db.getProfile(userID);
+
+                //second query for user data, compose message
+
+                const newMessage = messageQuery[0];
+                const newUser = user[0];
+
+                const composedMessage = {
+                    id: newMessage.id,
+                    first: newUser.first,
+                    imageurl: newUser.imgurl,
+                    last: newUser.last,
+                    message: newMessage.message,
+                    user_id: newMessage.user_id,
+                };
+
+                io.emit("addnewmessage", composedMessage);
+            });
+        } catch (err) {
+            console.log("error while inserting new message", err);
+        }
+    } catch (err) {
+        console.log("Error on io connection");
+    }
 });
