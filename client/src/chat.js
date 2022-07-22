@@ -16,19 +16,24 @@ export default function Chat() {
     };
     return (
         <>
-            <h1>Welcome to chat</h1>
+            <div id="chattitle">
+                <h1>Welcome to chat</h1>
+            </div>
             <div className="chat-display-container">
                 {messages &&
                     messages.map((message) => {
                         return (
                             <div key={message.id}>
-                                {message.message}
-                                {message.first} {message.last}
+                                {message.message} @ {message.first}{" "}
+                                {message.last}
                             </div>
                         );
                     })}
             </div>
+            <br/>
+            
             <textarea
+                id="chattext"
                 onKeyDown={keyCheck}
                 placeholder="add your messages here"
             ></textarea>

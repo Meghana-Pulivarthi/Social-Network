@@ -88,7 +88,7 @@ module.exports.findPeople = () => {
     return db.query(`SELECT * 
     FROM users
     ORDER BY id 
-    DESC LIMIT 3`);
+    DESC LIMIT 6`);
 };
 
 module.exports.getmatchingusers = (val) => {

@@ -28,17 +28,25 @@ export default class Upload extends Component {
     }
     render() {
         return (
-            <div>
-                <h3>Choose a picture to upload.</h3>
-                <h2 id="closeupload" onClick={() => this.props.modalCallBack()}>
-                    ❌
-                </h2>
+            <>
+                <div id="modal">
+                    <h2
+                        id="closeupload"
+                        onClick={() => this.props.modalCallBack()}
+                    >
+                        Choose a picture to upload. ❌
+                    </h2>
 
-                <form onSubmit={(e) => this.upload(e)}>
-                    <input name="upload" type="file" accept="image/*"></input>
-                    <button>Upload</button>
-                </form>
-            </div>
+                    <form onSubmit={(e) => this.upload(e)}>
+                        <input
+                            name="upload"
+                            type="file"
+                            accept="image/*"
+                        ></input>
+                        <button>Upload</button>
+                    </form>
+                </div>
+            </>
         );
     }
 }

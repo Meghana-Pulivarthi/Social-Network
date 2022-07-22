@@ -3,7 +3,7 @@ export default function Profile({ first, last, imgurl, modalCallBack }) {
     // console.log("Image url", imgurl);
 
     return (
-        <div>
+        <div id="profile-picture">
             {/* <header> */}
                 <img
                     id="profile-pic"

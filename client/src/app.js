@@ -79,15 +79,15 @@ export default class App extends Component {
                         <Logo />
                     </header>
                     <nav id="navbar">
-                        <br></br>
-                        <Link to="/find">Find Friends&nbsp;</Link>
-                        {/* <Link to="/">Upload Profile Picture</Link> */}
-                        <Link to="/profile">My Profile&nbsp;</Link>
-                        <Link to="/friendswannabee">
-                            Friends And Wannabees&nbsp;
-                        </Link>
-                        <Link to="/chat">Chat&nbsp;</Link>
-                        <Link to="/logout">Log Out&nbsp;</Link>&nbsp;
+                            {" "}
+                            <Link to="/find">Find Friends&nbsp;</Link>
+                            {/* <Link to="/">Upload Profile Picture</Link> */}
+                            <Link to="/profile">My Profile&nbsp;</Link>
+                            <Link to="/friendswannabee">
+                                Friends And Wannabees&nbsp;
+                            </Link>
+                            <Link to="/chat">Chat&nbsp;</Link>
+                            {/* <Link to="/logout">Log Out&nbsp;</Link>&nbsp; */}
                     </nav>
                     <Route exact path="/profile">
                         <Profilecontent
@@ -115,9 +115,9 @@ export default class App extends Component {
                     <Route path="/friendswannabee">
                         <FriendsWannabee />
                     </Route>
-                    <Route path="/logout">
+                    {/* <Route path="/logout">
                         <Logout />
-                    </Route>
+                    </Route> */}
                     <Route path="/chat">
                         <Chat />
                     </Route>

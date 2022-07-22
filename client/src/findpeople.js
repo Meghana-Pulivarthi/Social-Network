@@ -38,7 +38,7 @@ export default function FindPeople() {
     };
 
     return (
-        <>
+        <div>
             <h2>Find People</h2>
             <input
                 onChange={handleInputChange}
@@ -46,20 +46,22 @@ export default function FindPeople() {
                 name="userSearch"
                 value={searchInput}
             />
-            {users &&
-                users.map((users, id) => {
-                    // console.log("user", user);
-                    // console.log("id", id);
-                    return (
-                        <div id="main" key={users.id}>
-                            <img
-                                src={users.imgurl}
-                                alt={(users.first, users.last)}
-                            />
-                            {users.first} {users.last} {users.bio}
-                        </div>
-                    );
-                })}
-        </>
+            <div id="findfriends">
+                {users &&
+                    users.map((users, id) => {
+                        // console.log("user", user);
+                        // console.log("id", id);
+                        return (
+                            <div id="main" key={users.id}>
+                                <img id="friendsimg"
+                                    src={users.imgurl}
+                                    alt={(users.first, users.last)}
+                                />
+                                {users.first} {users.last} {users.bio}
+                            </div>
+                        );
+                    })}
+            </div>
+        </div>
     );
 }
